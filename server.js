@@ -8,7 +8,7 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
+const SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex') ;
 const PROD = process.env.NODE_ENV === 'production';
 const DATA_DIR = path.join(__dirname, 'data');
 const DB_FILE = path.join(DATA_DIR, 'users.json');
