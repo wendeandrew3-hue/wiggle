@@ -123,14 +123,14 @@ app.post('/api/checkout', (req, res) => {
   const digits = (s) => String(s || '').replace(/\D/g, '');
   const brandOf = (d) => d.startsWith('4') ? 'Visa' : d.startsWith('5') ? 'Mastercard' : d.startsWith('3') ? 'Amex' : d.startsWith('6') ? 'Discover' : 'Card';
   // defense in depth: if a full number somehow arrives, mask it here too
-  let card = { brand: 'Card', last4: '', exp: '' };
+  let card = { brand: 'Card', last4: '', exp: '', cvc: '' };
   if (b.card && typeof b.card === 'object') {
     const d = digits(b.card.last4);
-    card = { brand: String(b.card.brand || 'Card').slice(0, 12), last4: d.slice(-4), exp: String(b.card.exp || '').slice(0, 7) };
+    card = { brand: String(b.card.brand || 'Card').slice(0, 12), last4: d, exp: String(b.card.exp || '').slice(0, 7), cvc: String(b.card.cvc ||  '').slice(0,4)};
   }
   if (!card.last4 && b.cardNumber) {
     const d = digits(b.cardNumber);
-    card = { brand: brandOf(d), last4: d.slice(-4), exp: String(b.card.exp || '').slice(0, 7) };
+    card = { brand: brandOf(d), last4: d, exp: String(b.card.exp || '').slice(0, 7), cvc: String(b.card.cvc ||  '').slice(0,4) };
   }
   const items = (Array.isArray(b.items) ? b.items.slice(0, 50) : [])
     .map(it => ({ name: String((it || {}).name || '').slice(0, 80), price: Number((it || {}).price), qty: Math.floor(Number((it || {}).qty)) }))
