@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whisker &amp; Wag | Cat &amp; Dog Toys</title>
+<meta name="description" content="Toys for cats and dogs. Feather wands, catnip mice, rope tugs, squeaky bones and more from Whisker & Wag.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#14575c;
+    --teal-deep:#0e4247;
+    --cream:#faf5ec;
+    --cream-soft:#f1e9db;
+    --coral:#e8734a;
+    --coral-deep:#d05f39;
+    --ink:#20302d;
+    --muted:#6f7c78;
+    --line:#e7dfcf;
+    --radius:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;}
+  h1,h2,h3{font-family:'Fredoka',sans-serif;line-height:1.15;font-weight:600;}
+  img{max-width:100%;display:block;}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(250,245,236,0.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .nav{max-width:1080px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .logo{font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.3rem;color:var(--teal);text-decoration:none;}
+  .logo span{color:var(--coral);}
+  .nav-links{display:flex;gap:8px;}
+  .nav-links a{color:var(--ink);text-decoration:none;font-weight:600;font-size:0.9rem;padding:8px 14px;border-radius:999px;transition:background .2s;}
+  .nav-links a:hover{background:var(--cream-soft);}
+  .nav-cta{background:var(--coral);color:#fff;text-decoration:none;font-weight:600;font-size:0.9rem;padding:10px 20px;border-radius:999px;transition:background .2s;white-space:nowrap;}
+  .nav-cta:hover{background:var(--coral-deep);}
+  .nav-right{display:flex;align-items:center;gap:14px;}
+  .nav-login{color:var(--ink);font-weight:600;font-size:0.9rem;text-decoration:none;}
+  .nav-login:hover{color:var(--coral);}
+  .nav-cart{position:relative;color:var(--ink);text-decoration:none;font-size:1.15rem;line-height:1;}
+  .cart-count{position:absolute;top:-7px;right:-10px;background:var(--coral);color:#fff;font-size:0.7rem;font-weight:700;min-width:17px;height:17px;border-radius:999px;display:none;align-items:center;justify-content:center;padding:0 4px;}
+  .theme-toggle{background:#fff;border:1px solid var(--line);border-radius:999px;width:38px;height:38px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  [data-theme=dark] .nav-cart,[data-theme=dark] .nav-login{color:var(--cream);}
+  [data-theme=dark] header{background:rgba(14,66,71,0.95);}
+  [data-theme=dark] .theme-toggle{background:var(--teal-deep);border-color:#2c4a44;color:var(--cream);}
+  [data-theme=dark] .logo{color:var(--cream);}
+
+  .hero{max-width:1080px;margin:0 auto;padding:64px 20px 48px;text-align:center;}
+  .hero .kicker{display:inline-block;background:var(--cream-soft);border:1px solid var(--line);color:var(--teal);font-size:0.8rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:18px;}
+  .hero h1{font-size:clamp(2.1rem,6vw,3.3rem);color:var(--teal);margin-bottom:16px;}
+  .hero p{color:var(--muted);font-size:1.05rem;max-width:34rem;margin:0 auto 28px;}
+  .btn-primary{display:inline-block;background:var(--coral);color:#fff;text-decoration:none;font-weight:700;font-size:1rem;padding:15px 34px;border-radius:999px;transition:background .2s;}
+  .btn-primary:hover{background:var(--coral-deep);}
+
+  .section{max-width:1080px;margin:0 auto;padding:48px 20px;}
+  .section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;}
+  .section-head h2{font-size:clamp(1.5rem,4vw,2rem);color:var(--teal);}
+  .section-head .badge{font-size:0.75rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:6px 14px;border-radius:999px;}
+  .badge-cat{background:#efe7f7;color:#6b4fa3;}
+  .badge-dog{background:#e9f0e4;color:#4a7c3f;}
+
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;}
+  .card img{aspect-ratio:1/1;object-fit:cover;width:100%;background:var(--cream-soft);}
+  .card-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px;flex:1;}
+  .card h3{font-size:1.05rem;color:var(--ink);}
+  .card .desc{color:var(--muted);font-size:0.88rem;flex:1;}
+  .price{font-weight:700;color:var(--teal);font-size:1.05rem;}
+  .buy{background:var(--teal);color:#fff;border:none;font-family:'Inter',sans-serif;font-weight:600;font-size:0.9rem;padding:11px 18px;border-radius:999px;cursor:pointer;transition:background .2s;}
+  .buy:hover{background:var(--teal-deep);}
+  .added-note{display:none;color:#4a7c3f;font-size:0.82rem;font-weight:600;}
+
+  .why{background:var(--teal);color:var(--cream);}
+  .why .section{padding:56px 20px;}
+  .why .section-head h2{color:var(--cream);}
+  .why .grid{grid-template-columns:repeat(2,1fr);}
+  .why .card{background:var(--teal-deep);border-color:#1d6a70;}
+  .why .card h3{color:var(--cream);}
+  .why .card p{color:#bcd6d4;}
+  .why .icon{font-size:1.5rem;margin-bottom:10px;}
+
+  .cta-band{background:var(--cream-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .cta-inner{max-width:720px;margin:0 auto;padding:56px 20px;text-align:center;}
+  .cta-inner h2{font-size:clamp(1.7rem,5vw,2.4rem);color:var(--teal);margin-bottom:12px;}
+  .cta-inner p{color:var(--muted);margin-bottom:24px;}
+
+  footer{background:var(--teal-deep);color:#bcd6d4;padding:32px 20px;}
+  .foot-inner{max-width:1080px;margin:0 auto;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;font-size:0.88rem;}
+  .foot-inner .logo{color:var(--cream);}
+  .foot-inner a{color:#bcd6d4;text-decoration:none;border-bottom:1px solid #2a6a6f;}
+  .foot-inner a:hover{color:var(--cream);}
+
+  @media (min-width:820px){
+    .grid{grid-template-columns:repeat(3,1fr);}
+    .hero{padding:88px 20px 64px;}
+  }
+  @media (max-width:480px){
+    .grid{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+  }
+  [data-theme=dark] body{background:#0e2a2c;color:var(--cream);}
+  [data-theme=dark] .card{background:#124039;border-color:#1d524a;}
+  [data-theme=dark] .card h3,[data-theme=dark] .hero-copy h1{color:var(--cream);}
+  [data-theme=dark] .card .desc,[data-theme=dark] .hero-copy p{color:#b8c7bd;}
+  [data-theme=dark] .why .card,[data-theme=dark] .steps{background:#0e2a2c;}
+  [data-theme=dark] .section-head h2{color:var(--cream);}
+  [data-theme=dark] .price{color:#f0b48f;}
+  [data-theme=dark] .hero .kicker{background:#124039;color:var(--cream);border-color:#1d524a;}
+  [data-theme=dark] .cta-band{background:#124039;border-color:#1d524a;}
+  [data-theme=dark] .cta-inner h2{color:var(--cream);}
+  [data-theme=dark] .cta-inner p{color:#b8c7bd;}
+  [data-theme=dark] footer{background:#0b2224;}
+  [data-theme=dark] .nav-links a{color:var(--cream);}
+  [data-theme=dark] .nav-links a:hover{background:#124039;}
+  [data-theme=dark] .badge-cat{background:#3a2e52;color:#cdb8ec;}
+  [data-theme=dark] .badge-dog{background:#2c3f28;color:#b6d6ae;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="#top">Whisker <span>&amp;</span> Wag</a>
+    <div class="nav-links">
+      <a href="#cat-toys">Cat Toys</a>
+      <a href="#dog-toys">Dog Toys</a>
+    </div>
+    <div class="nav-right">
+      <button class="theme-toggle" type="button">&#9789;</button>
+      <a class="nav-cart" href="account.html#cart" aria-label="Your cart">&#128722;<span class="cart-count"></span></a>
+      <a class="nav-login" href="login.html">Log in</a>
+    </div>
+    <a class="nav-cta" href="#cat-toys">Shop toys</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <span class="kicker">Playtime, sorted</span>
+    <h1>Toys that keep every tail busy.</h1>
+    <p>Hand-picked cat and dog toys that survive real play. Wands, mice, tugs, squeakers and balls, split so you find your pet's favorite in seconds.</p>
+    <a class="btn-primary" href="#cat-toys">Shop toys</a>
+  </section>
+
+  <section class="section" id="cat-toys">
+    <div class="section-head">
+      <h2>Cat Toys</h2>
+      <span class="badge badge-cat">9 picks</span>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/68c779bec_generated_image.png" alt="Interactive feather wand cat toy">
+        <div class="card-body">
+          <h3>Feather Wand</h3>
+          <p class="desc">Wooden handle, real feathers and a bell. Ten minutes tires out any indoor cat.</p>
+          <div class="price">$8.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Feather Wand" data-price="$8.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/c0b0edc6b_generated_image.png" alt="Catnip mice toys set of three">
+        <div class="card-body">
+          <h3>Catnip Mice 3-Pack</h3>
+          <p class="desc">Soft felt mice stuffed with catnip. The classic hunt-and-toss toy, three to a pack.</p>
+          <div class="price">$6.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Catnip Mice 3-Pack" data-price="$6.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/8dd458249_generated_image.png" alt="Laser pointer cat toy">
+        <div class="card-body">
+          <h3>Laser Pointer Pen</h3>
+          <p class="desc">A chase your cat can never catch. Great for zoomies and daily exercise.</p>
+          <div class="price">$12.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Laser Pointer Pen" data-price="$12.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/0a4257676_generated_image.png" alt="Set of crinkle ball cat toys">
+        <div class="card-body">
+          <h3>Crinkle Ball 4-Pack</h3>
+          <p class="desc">Foil balls that crunch, sparkle and skitter. Cats bat them under every sofa.</p>
+          <div class="price">$5.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Crinkle Ball 4-Pack" data-price="$5.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/7a52c1f85_generated_image.png" alt="Collapsible fabric cat tunnel">
+        <div class="card-body">
+          <h3>Collapsible Cat Tunnel</h3>
+          <p class="desc">Peek-hole tunnel for hiding, pouncing and napping. Folds flat in seconds.</p>
+          <div class="price">$14.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Collapsible Cat Tunnel" data-price="$14.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/b73e9882c_generated_image.png" alt="Corrugated cardboard cat scratcher board">
+        <div class="card-body">
+          <h3>Wave Scratcher Board</h3>
+          <p class="desc">Curved cardboard scratcher that saves your furniture. Comes with a feather toy.</p>
+          <div class="price">$9.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Wave Scratcher Board" data-price="$9.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/54f6abfc0_generated_image.png" alt="Clear treat dispenser puzzle ball for cats">
+        <div class="card-body">
+          <h3>Treat Puzzle Ball</h3>
+          <p class="desc">Load kibble, watch them bat it around until dinner falls out. Slow feeding plus play.</p>
+          <div class="price">$11.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Treat Puzzle Ball" data-price="$11.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/ea99e1998_generated_image.png" alt="Plush catnip kicker fish toy">
+        <div class="card-body">
+          <h3>Kicker Fish Toy</h3>
+          <p class="desc">Long plush fish stuffed with catnip. Perfect for rabbit-kicking attacks.</p>
+          <div class="price">$7.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Kicker Fish Toy" data-price="$7.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/0d306d198_generated_image.png" alt="Circular cat ball track toy">
+        <div class="card-body">
+          <h3>Ball Track Toy</h3>
+          <p class="desc">A ball that circles the track and never gets lost. Mesmerizing solo play.</p>
+          <div class="price">$10.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Ball Track Toy" data-price="$10.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="dog-toys" style="padding-top:16px;">
+    <div class="section-head">
+      <h2>Dog Toys</h2>
+      <span class="badge badge-dog">11 picks</span>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/69d38bb2f_generated_image.png" alt="Knotted rope tug toy for dogs">
+        <div class="card-body">
+          <h3>Rope Tug Toy</h3>
+          <p class="desc">Thick cotton knots built for tugging and fetch. Flosses teeth while they chew.</p>
+          <div class="price">$9.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Rope Tug Toy" data-price="$9.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/11d17ab5f_generated_image.png" alt="Squeaky plush bone dog toy">
+        <div class="card-body">
+          <h3>Squeaky Plush Bone</h3>
+          <p class="desc">Soft plush with a loud squeaker. Comfort toy by day, noise machine by night.</p>
+          <div class="price">$7.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Squeaky Plush Bone" data-price="$7.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/f5adbfcbd_generated_image.png" alt="Two rubber dog balls in orange and mint">
+        <div class="card-body">
+          <h3>Rubber Ball 2-Pack</h3>
+          <p class="desc">Durable natural rubber, easy to clean, bounces unpredictably. Two balls, double fetch.</p>
+          <div class="price">$11.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Rubber Ball 2-Pack" data-price="$11.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/eea1c1b60_generated_image.png" alt="Three green tennis balls for dogs">
+        <div class="card-body">
+          <h3>Tennis Ball 3-Pack</h3>
+          <p class="desc">The classic. Fuzzy, bouncy, fits every ball launcher. Three so one always survives.</p>
+          <div class="price">$8.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Tennis Ball 3-Pack" data-price="$8.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/1b7b5f8b4_generated_image.png" alt="Orange rubber dog frisbee">
+        <div class="card-body">
+          <h3>Fetch Frisbee</h3>
+          <p class="desc">Flexible rubber disc that flies straight and is gentle on teeth. Land or water.</p>
+          <div class="price">$9.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Fetch Frisbee" data-price="$9.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/335532ad1_generated_image.png" alt="Mint rubber dental chew ring toy">
+        <div class="card-body">
+          <h3>Dental Chew Ring</h3>
+          <p class="desc">Textured nubs clean teeth as they gnaw. Tough rubber for serious chewers.</p>
+          <div class="price">$8.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Dental Chew Ring" data-price="$8.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/8508f5e97_generated_image.png" alt="Orange interactive treat dispenser puzzle cube">
+        <div class="card-body">
+          <h3>Treat Puzzle Cube</h3>
+          <p class="desc">Slide the blocks, spin the layers, dinner appears. Slows fast eaters and sharpens minds.</p>
+          <div class="price">$13.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Treat Puzzle Cube" data-price="$13.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/956108035_generated_image.png" alt="Soft plush squeaky duck dog toy">
+        <div class="card-body">
+          <h3>Plush Squeaky Duck</h3>
+          <p class="desc">Cream and yellow cuddle duck with a squeaker that survives the shake.</p>
+          <div class="price">$8.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Plush Squeaky Duck" data-price="$8.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/c725a94b9_generated_image.png" alt="Blue knotted cotton rope ball dog toy">
+        <div class="card-body">
+          <h3>Rope Ball</h3>
+          <p class="desc">Knotted cotton in ball form. Fetch, roll, chew. No loose threads to swallow.</p>
+          <div class="price">$10.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Rope Ball" data-price="$10.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/7fac3d109_generated_image.png" alt="Natural brown rubber fetch stick dog toy">
+        <div class="card-body">
+          <h3>Rubber Fetch Stick</h3>
+          <p class="desc">Stick-shaped rubber that does not splinter like the real thing. Mint scent they love.</p>
+          <div class="price">$7.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Rubber Fetch Stick" data-price="$7.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://media.base44.com/images/public/6abb9d8658ca4f3d10f85c7a/918dd527c_generated_image.png" alt="Pink squeaky latex pig dog toy">
+        <div class="card-body">
+          <h3>Squeaky Latex Pig</h3>
+          <p class="desc">Loud latex squeaker in a soft pig. Every squeeze sounds like a party.</p>
+          <div class="price">$6.99</div>
+          <button class="buy add-to-cart" type="button" data-name="Squeaky Latex Pig" data-price="$6.99">Add to Cart</button>
+          <span class="added-note">Added &#10003;</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="why">
+    <div class="section">
+      <div class="section-head">
+        <h2>Why pets and owners pick us</h2>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <div class="icon">&#128062;</div>
+          <h3>Built for real play</h3>
+          <p>Every toy is picked to survive chewing, pouncing and tug-of-war, not just look cute.</p>
+        </div>
+        <div class="card">
+          <div class="icon">&#127968;</div>
+          <h3>Small-space friendly</h3>
+          <p>Toys sized for apartments and yards alike. Indoor cats and couch dogs covered.</p>
+        </div>
+        <div class="card">
+          <div class="icon">&#128176;</div>
+          <h3>Honest prices</h3>
+          <p>No giant markups. A happy pet should not cost an arm and a paw.</p>
+        </div>
+        <div class="card">
+          <div class="icon">&#128172;</div>
+          <h3>Owners talk to owners</h3>
+          <p>Questions about a toy? Message us on Telegram and a real person answers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="cta-inner">
+      <h2>One toy away from a very happy pet.</h2>
+      <p>Pick a toy, place your order, and we will message you to arrange payment and delivery.</p>
+      <a class="btn-primary" href="#cat-toys">Start shopping</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <a class="logo" href="#top">Whisker <span style="color:var(--coral);">&amp;</span> Wag</a>
+    <span>&copy; 2026 Whisker &amp; Wag. Cat and dog toys, picked for real play.</span>
+    <a href="https://t.me/IREDROX" target="_blank" rel="noopener">Telegram @IREDROX</a>
+  </div>
+</footer>
+
+<script src="theme.js"></script>
+<script src="cart.js"></script>
+<script>
+  document.querySelectorAll('.add-to-cart').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      WWCart.add(btn.dataset.name, parseFloat(btn.dataset.price));
+      btn.parentElement.querySelector('.added-note').style.display = 'block';
+      setTimeout(function () { btn.parentElement.querySelector('.added-note').style.display = 'none'; }, 1600);
+    });
+  });
+</script>
+
+</body>
+</html>

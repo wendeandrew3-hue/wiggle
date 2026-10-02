@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account - Whisker &amp; Wag</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#e8734a;--accent-dark:#d05f39;--ink:#20302d;--muted:#6f7c78;
+    --bg:#faf5ec;--card:#ffffff;--line:#e7dfcf;
+    --header-bg:#ffffff;--footer-bg:#f1e9db;
+  }
+  [data-theme=dark]{
+    --ink:#eceef2;--muted:#9aa1ad;--bg:#14161c;--card:#1d2028;--line:#2c313d;
+    --header-bg:#1d2028;--footer-bg:#101218;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;}
+  header{border-bottom:1px solid var(--line);background:var(--header-bg);}
+  .nav{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;}
+  .nav a.logo{color:var(--ink);text-decoration:none;font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.2rem;}
+  .nav a.logo span{color:var(--accent);}
+  .nav-right{display:flex;align-items:center;gap:16px;}
+  .back{font-size:0.85rem;color:var(--muted);text-decoration:none;font-family:'Inter',sans-serif;font-weight:500;}
+  .back:hover{color:var(--accent);}
+  .nav-cart{position:relative;color:var(--ink);text-decoration:none;font-size:1.15rem;line-height:1;}
+  .cart-count{position:absolute;top:-7px;right:-10px;background:var(--accent);color:#fff;font-size:0.7rem;font-weight:700;min-width:17px;height:17px;border-radius:999px;display:none;align-items:center;justify-content:center;padding:0 4px;}
+  .theme-toggle{background:var(--card);border:1px solid var(--line);border-radius:999px;width:38px;height:38px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  main{max-width:760px;margin:0 auto;padding:48px 20px 80px;}
+  h1{font-family:'Fredoka',sans-serif;font-size:1.7rem;margin-bottom:6px;}
+  h2{font-family:'Fredoka',sans-serif;font-size:1.25rem;margin-bottom:14px;}
+  .sub{color:var(--muted);font-size:0.95rem;margin-bottom:28px;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:28px;}
+  .row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:0.95rem;}
+  .row:last-of-type{border-bottom:none;}
+  .row span:first-child{color:var(--muted);}
+  .actions{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;}
+  .btn{display:inline-block;background:var(--accent);color:#fff;font-weight:600;font-size:0.95rem;padding:12px 22px;border:none;border-radius:10px;text-decoration:none;cursor:pointer;border:none;}
+  .btn:hover{background:var(--accent-dark);}
+  .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--line);}
+  .cart-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);}
+  .cart-item:last-of-type{border-bottom:none;}
+  .ci-name{font-weight:600;font-size:0.95rem;flex:1;}
+  .ci-price{font-weight:700;}
+  .qty{display:flex;align-items:center;gap:8px;}
+  .qty button{width:28px;height:28px;border:1px solid var(--line);background:var(--card);border-radius:8px;cursor:pointer;font-weight:700;color:var(--ink);font-size:0.95rem;}
+  .qty span{font-weight:600;min-width:16px;text-align:center;}
+  .cart-total{display:flex;justify-content:space-between;font-weight:700;font-size:1.05rem;padding-top:16px;}
+  .empty{color:var(--muted);text-align:center;padding:18px 0;}
+  .empty a{color:var(--accent);font-weight:600;}
+  footer{border-top:1px solid var(--line);}
+  .foot-inner{max-width:760px;margin:0 auto;padding:20px;color:var(--muted);font-size:0.85rem;text-align:center;}
+  .tg-float{position:fixed;right:20px;bottom:20px;width:54px;height:54px;border-radius:50%;background:#229ED9;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(34,158,217,0.45);transition:transform .2s;z-index:90;}
+  .tg-float:hover{transform:scale(1.1);}
+  .tg-float svg{width:28px;height:28px;fill:#fff;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="index.html">Whisker <span>&amp;</span> Wag</a>
+    <div class="nav-right">
+      <button class="theme-toggle" type="button">&#9789;</button>
+      <a class="nav-cart" href="#cart" aria-label="Your cart">&#128722;<span class="cart-count"></span></a>
+      <a class="back" href="index.html">&larr; Back to store</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1 id="greeting">My Account</h1>
+  <p class="sub">Your details and your cart, all in one place.</p>
+
+  <div class="box">
+    <h2>Profile</h2>
+    <div class="row"><span>Name</span><span id="name">Loading...</span></div>
+    <div class="row"><span>Email</span><span id="email">Loading...</span></div>
+    <div class="actions">
+      <a class="btn" href="index.html#products">Continue Shopping</a>
+      <form action="/api/logout" method="POST" style="display:inline;">
+        <button class="btn btn-ghost" type="submit">Log Out</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="box" id="cart">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+  </div>
+</main>
+
+<a class="tg-float" href="https://t.me/IREDROX" target="_blank" rel="noopener" aria-label="Contact us on Telegram">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.91 3.79L20.3 20.84c-.25 1.21-.98 1.5-2 .94l-5.5-4.07-2.66 2.57c-.3.3-.55.54-1.1.54-.72 0-.6-.27-.84-.95L6.3 13.7l-5.45-1.7c-1.18-.35-1.19-1.16.26-1.72l21.26-8.2c1.1-.4 2.07.24 1.54 2.01z"/></svg>
+</a>
+
+<footer>
+  <div class="foot-inner">
+    <p>(c) 2026 Whisker &amp; Wag. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="theme.js"></script>
+<script src="cart.js"></script>
+<script>
+  fetch('/api/me')
+    .then(r => { if (!r.ok) window.location.href = 'login.html'; return r.json(); })
+    .then(user => {
+      document.getElementById('greeting').textContent = 'Hi, ' + user.name.split(' ')[0];
+      document.getElementById('name').textContent = user.name;
+      document.getElementById('email').textContent = user.email;
+    })
+    .catch(() => window.location.href = 'login.html');
+
+  function renderCart() {
+    var wrap = document.getElementById('cart-items');
+    var cart = WWCart.get();
+    if (cart.length === 0) {
+      wrap.innerHTML = '<p class="empty">Your cart is empty. <a href="index.html#products">Browse the toys</a></p>';
+      return;
+    }
+    var html = '';
+    cart.forEach(function (i) {
+      html += '<div class="cart-item">'
+        + '<span class="ci-name">' + i.name + '</span>'
+        + '<div class="qty"><button data-name="' + i.name + '" data-d="-1">&minus;</button>'
+        + '<span>' + i.qty + '</span>'
+        + '<button data-name="' + i.name + '" data-d="1">+</button></div>'
+        + '<span class="ci-price">$' + (i.price * i.qty).toFixed(2) + '</span>'
+        + '<button class="btn btn-ghost" style="padding:6px 12px;font-size:0.8rem;" data-remove="' + i.name + '">Remove</button>'
+        + '</div>';
+    });
+    html += '<div class="cart-total"><span>Total</span><span id="cart-total">$' + WWCart.total().toFixed(2) + '</span></div>';
+    html += '<div class="actions"><a class="btn" href="checkout.html">Proceed to Checkout</a></div>';
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('.qty button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var item = cart.filter(x => x.name === b.dataset.name)[0];
+        WWCart.setQty(b.dataset.name, item.qty + parseInt(b.dataset.d));
+        renderCart();
+      });
+    });
+    wrap.querySelectorAll('[data-remove]').forEach(function (b) {
+      b.addEventListener('click', function () { WWCart.remove(b.dataset.remove); renderCart(); });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', renderCart);
+</script>
+
+</body>
+</html>

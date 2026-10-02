@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout - Whisker &amp; Wag</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#e8734a;--accent-dark:#d05f39;--ink:#20302d;--muted:#6f7c78;
+    --bg:#faf5ec;--card:#ffffff;--line:#e7dfcf;
+    --header-bg:#ffffff;--footer-bg:#f1e9db;
+  }
+  [data-theme=dark]{
+    --ink:#eceef2;--muted:#9aa1ad;--bg:#14161c;--card:#1d2028;--line:#2c313d;
+    --header-bg:#1d2028;--footer-bg:#101218;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;}
+  header{border-bottom:1px solid var(--line);background:var(--header-bg);}
+  .nav{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;}
+  .nav a.logo{color:var(--ink);text-decoration:none;font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.2rem;}
+  .nav a.logo span{color:var(--accent);}
+  .nav-right{display:flex;align-items:center;gap:16px;}
+  .back{font-size:0.85rem;color:var(--muted);text-decoration:none;font-family:'Inter',sans-serif;font-weight:500;}
+  .back:hover{color:var(--accent);}
+  .nav-cart{position:relative;color:var(--ink);text-decoration:none;font-size:1.15rem;line-height:1;}
+  .cart-count{position:absolute;top:-7px;right:-10px;background:var(--accent);color:#fff;font-size:0.7rem;font-weight:700;min-width:17px;height:17px;border-radius:999px;display:none;align-items:center;justify-content:center;padding:0 4px;}
+  .theme-toggle{background:var(--card);border:1px solid var(--line);border-radius:999px;width:38px;height:38px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  main{max-width:760px;margin:0 auto;padding:48px 20px 80px;}
+  h1{font-family:'Fredoka',sans-serif;font-size:1.8rem;margin-bottom:8px;}
+  .sub{color:var(--muted);margin-bottom:32px;}
+  h2{font-family:'Fredoka',sans-serif;font-size:1.2rem;margin-bottom:14px;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:28px;}
+  .summary-item{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:0.95rem;}
+  .summary-item:last-of-type{border-bottom:none;}
+  .summary-item .qty-pill{color:var(--muted);font-size:0.85rem;margin-left:8px;}
+  .summary-total{display:flex;justify-content:space-between;font-weight:700;font-size:1.05rem;padding-top:14px;}
+  .pay-opt{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px;cursor:pointer;transition:border-color .2s;}
+  .pay-opt:hover{border-color:var(--accent);}
+  .pay-opt.selected{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,115,74,0.18);}
+  .pay-opt-head{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .pay-opt-title{font-weight:700;font-size:1rem;display:flex;align-items:center;gap:10px;}
+  .pay-opt-sub{color:var(--muted);font-size:0.85rem;margin-top:4px;}
+  .radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;}
+  .pay-opt.selected .radio{border-color:var(--accent);background:var(--accent);box-shadow:inset 0 0 0 4px var(--card);}
+  .badges{display:flex;gap:6px;flex-wrap:wrap;}
+  .badge{font-size:0.7rem;font-weight:700;letter-spacing:0.04em;padding:4px 9px;border-radius:6px;color:#fff;background:#3a4050;}
+  .badge.visa{background:#1a1f71;} .badge.mc{background:#eb001b;} .badge.amex{background:#0070ce;}
+  .card-form{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--line);}
+  .card-form label{display:block;font-size:0.8rem;font-weight:600;margin:10px 0 6px;}
+  .card-form input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-family:'Inter',sans-serif;font-size:0.95rem;background:var(--bg);color:var(--ink);}
+  .card-form input:focus{outline:2px solid var(--accent);border-color:var(--accent);}
+  .card-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+
+
+
+
+
+  .pay-cta{width:100%;background:var(--accent);color:#fff;font-weight:700;font-size:1.05rem;padding:15px;border:none;border-radius:12px;cursor:pointer;margin-top:10px;}
+  .pay-cta:hover{background:var(--accent-dark);}
+  .note{font-size:0.78rem;color:var(--muted);margin-top:14px;text-align:center;}
+  .empty-cart{color:var(--muted);text-align:center;padding:14px 0;}
+  .ship-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .ship-grid .full{grid-column:1 / -1;}
+  .ship-field label{display:block;font-size:0.8rem;font-weight:600;margin-bottom:6px;}
+  .ship-field input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-family:'Inter',sans-serif;font-size:0.95rem;background:var(--bg);color:var(--ink);}
+  .ship-field input:focus{outline:2px solid var(--accent);border-color:var(--accent);}
+  @media(max-width:480px){.ship-grid{grid-template-columns:1fr;}}
+  .same-billing{display:flex;align-items:center;gap:10px;margin-top:18px;font-size:0.92rem;cursor:pointer;font-weight:500;}
+  .same-billing input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;}
+  .billing-block{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--line);}
+  .billing-block.open{display:block;}
+  .empty-cart a{color:var(--accent);font-weight:600;}
+  footer{border-top:1px solid var(--line);}
+  .tg-float{position:fixed;right:20px;bottom:20px;width:54px;height:54px;border-radius:50%;background:#229ED9;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(34,158,217,0.45);transition:transform .2s;z-index:90;}
+  .tg-float:hover{transform:scale(1.1);}
+  .tg-float svg{width:28px;height:28px;fill:#fff;}
+  .foot-inner{max-width:760px;margin:0 auto;padding:20px;color:var(--muted);font-size:0.85rem;text-align:center;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="index.html">Whisker <span>&amp;</span> Wag</a>
+    <div class="nav-right">
+      <button class="theme-toggle" type="button">&#9789;</button>
+      <a class="nav-cart" href="account.html#cart" aria-label="Your cart">&#128722;<span class="cart-count"></span></a>
+      <a class="back" href="index.html">&larr; Back to store</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1>Checkout</h1>
+  <p class="sub">Review your order, then pick how you want to pay.</p>
+
+  <div class="box">
+    <h2>Order Summary</h2>
+    <div id="summary"></div>
+  </div>
+
+  <div class="box">
+    <h2>Shipping Details</h2>
+    <div class="ship-grid">
+      <div class="ship-field">
+        <label for="fname">First name</label>
+        <input id="fname" type="text" placeholder="John" autocomplete="given-name">
+      </div>
+      <div class="ship-field">
+        <label for="lname">Last name</label>
+        <input id="lname" type="text" placeholder="Doe" autocomplete="family-name">
+      </div>
+      <div class="ship-field full">
+        <label for="street">Street address</label>
+        <input id="street" type="text" placeholder="123 Main Street" autocomplete="street-address">
+      </div>
+      <div class="ship-field">
+        <label for="city">City</label>
+        <input id="city" type="text" placeholder="Austin" autocomplete="address-level2">
+      </div>
+      <div class="ship-field">
+        <label for="state">State</label>
+        <input id="state" type="text" placeholder="TX" autocomplete="address-level1" maxlength="2">
+      </div>
+      <div class="ship-field full">
+        <label for="zip">ZIP code</label>
+        <input id="zip" type="text" inputmode="numeric" placeholder="78701" autocomplete="postal-code" maxlength="10">
+      </div>
+    </div>
+  </div>
+
+  <div class="box">
+    <h2>Payment Method</h2>
+
+    <button class="pay-opt" id="opt-card" type="button">
+      <div class="pay-opt-head">
+        <span class="pay-opt-title">Card</span>
+        <span class="badges"><span class="badge visa">VISA</span><span class="badge mc">Mastercard</span><span class="badge amex">AMEX</span></span>
+      </div>
+      <p class="pay-opt-sub">Pay with Visa, Mastercard or American Express.</p>
+    </button>
+
+    <!-- Card panel -->
+    <form class="card-form" id="panel-card">
+      <label for="cnum">Card number</label>
+      <input id="cnum" type="text" inputmode="numeric" placeholder="1234 5678 9012 3456" autocomplete="off">
+      <div class="card-row">
+        <div>
+          <label for="cexp">Expiry</label>
+          <input id="cexp" type="text" placeholder="MM / YY" autocomplete="off">
+        </div>
+        <div>
+          <label for="ccvc">CVC</label>
+          <input id="ccvc" type="text" inputmode="numeric" placeholder="123" autocomplete="off">
+        </div>
+      </div>
+      <label class="same-billing"><input type="checkbox" id="same-billing" checked> Billing address is the same as shipping</label>
+      <div class="billing-block" id="billing-block">
+        <div class="ship-grid">
+          <div class="ship-field">
+            <label for="bfname">First name</label>
+            <input id="bfname" type="text" placeholder="John" autocomplete="given-name">
+          </div>
+          <div class="ship-field">
+            <label for="blname">Last name</label>
+            <input id="blname" type="text" placeholder="Doe" autocomplete="family-name">
+          </div>
+          <div class="ship-field full">
+            <label for="bstreet">Street address</label>
+            <input id="bstreet" type="text" placeholder="123 Main Street" autocomplete="billing street-address">
+          </div>
+          <div class="ship-field">
+            <label for="bcity">City</label>
+            <input id="bcity" type="text" placeholder="Austin" autocomplete="billing address-level2">
+          </div>
+          <div class="ship-field">
+            <label for="bstate">State</label>
+            <input id="bstate" type="text" placeholder="TX" maxlength="2">
+          </div>
+          <div class="ship-field full">
+            <label for="bzip">ZIP code</label>
+            <input id="bzip" type="text" inputmode="numeric" placeholder="78701" maxlength="10">
+          </div>
+        </div>
+      </div>
+      <button class="pay-cta" type="submit">Confirm Payment</button>
+      <p class="note">Card details are never stored on this site.</p>
+    </form>
+
+    <p class="note">Questions before paying? Email us, we answer fast.</p>
+  </div>
+</main>
+
+<a class="tg-float" href="https://t.me/IREDROX" target="_blank" rel="noopener" aria-label="Contact us on Telegram">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.91 3.79L20.3 20.84c-.25 1.21-.98 1.5-2 .94l-5.5-4.07-2.66 2.57c-.3.3-.55.54-1.1.54-.72 0-.6-.27-.84-.95L6.3 13.7l-5.45-1.7c-1.18-.35-1.19-1.16.26-1.72l21.26-8.2c1.1-.4 2.07.24 1.54 2.01z"/></svg>
+</a>
+
+<footer>
+  <div class="foot-inner">
+    <p>(c) 2026 Whisker &amp; Wag. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="theme.js"></script>
+<script src="cart.js"></script>
+<script>
+  function renderSummary() {
+    var cart = WWCart.get();
+    var wrap = document.getElementById('summary');
+    if (cart.length === 0) {
+      wrap.innerHTML = '<p class="empty-cart">Your cart is empty. <a href="index.html#products">Add a toy first</a></p>';
+      return false;
+    }
+    var html = '';
+    cart.forEach(function (i) {
+      html += '<div class="summary-item"><span>' + i.name + '<span class="qty-pill">x' + i.qty + '</span></span><span>$' + (i.price * i.qty).toFixed(2) + '</span></div>';
+    });
+    html += '<div class="summary-total"><span>Total</span><span>$' + WWCart.total().toFixed(2) + '</span></div>';
+    wrap.innerHTML = html;
+    return true;
+  }
+
+  var panels = { 'opt-card': 'panel-card' };
+  Object.keys(panels).forEach(function (optId) {
+    document.getElementById(optId).addEventListener('click', function () {
+      var wasSelected = document.getElementById(optId).classList.contains('selected');
+      document.querySelectorAll('.pay-opt').forEach(function (o) { o.classList.remove('selected'); });
+      Object.values(panels).forEach(function (p) {
+        var el = document.getElementById(p);
+        el.style.display = 'none';
+        el.classList.remove('visible');
+      });
+      if (!wasSelected) {
+        document.getElementById(optId).classList.add('selected');
+        var panel = document.getElementById(panels[optId]);
+        panel.style.display = 'block';
+      }
+    });
+  });
+
+  var sameBox = document.getElementById('same-billing');
+  var billingBlock = document.getElementById('billing-block');
+  sameBox.addEventListener('change', function () {
+    billingBlock.classList.toggle('open', !sameBox.checked);
+  });
+
+  document.getElementById('panel-card').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var num = document.getElementById('cnum').value.replace(/\D/g, '');
+    var exp = document.getElementById('cexp').value.trim();
+    if (num.length < 12 || !/\d/.test(exp)) { alert('Please enter a valid card number and expiry.'); return; }
+    var brand = num.charAt(0) === '4' ? 'Visa' : num.charAt(0) === '5' ? 'Mastercard' : num.charAt(0) === '3' ? 'Amex' : num.charAt(0) === '6' ? 'Discover' : 'Card';
+    var shipping = {
+      name: document.getElementById('fname').value.trim() + ' ' + document.getElementById('lname').value.trim(),
+      street: document.getElementById('street').value.trim(),
+      city: document.getElementById('city').value.trim(),
+      state: document.getElementById('state').value.trim(),
+      zip: document.getElementById('zip').value.trim()
+    };
+    var same = document.getElementById('same-billing').checked;
+    var billing = same ? shipping : {
+      name: document.getElementById('bfname').value.trim() + ' ' + document.getElementById('blname').value.trim(),
+      street: document.getElementById('bstreet').value.trim(),
+      city: document.getElementById('bcity').value.trim(),
+      state: document.getElementById('bstate').value.trim(),
+      zip: document.getElementById('bzip').value.trim()
+    };
+    var cart = JSON.parse(localStorage.getItem('ww-cart') || '[]');
+    var amount = cart.reduce(function (s, it) { return s + it.price * it.qty; }, 0);
+    fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: shipping.name, email: document.getElementById('cemail') ? document.getElementById('cemail').value : '', amount: amount, items: cart,
+        shipping: shipping, billing: billing,
+        card: { brand: brand, last4: num.slice(-4), exp: exp } // full number and CVC never leave the browser
+      })
+    }).then(function (r) { return r.json(); }).then(function (data) {
+      if (data.ok) {
+        localStorage.removeItem('ww-cart');
+        document.querySelector('main').innerHTML = '<div class="box" style="text-align:center;padding:60px 30px;"><h1 style="font-family:\'Fredoka\',sans-serif;">Order received</h1><p style="color:var(--muted);margin:12px 0 6px;">Reference: ' + data.orderId + '</p><p style="color:var(--muted);">We have received your order and will email you shortly to arrange payment and delivery. Please keep your reference number.</p><p style="margin-top:22px;"><a href="index.html" style="color:var(--accent);font-weight:600;">Back to the store</a></p></div>';
+      }
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', renderSummary);
+</script>
+
+</body>
+</html>

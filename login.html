@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In - Whisker &amp; Wag</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#e8734a;--accent-dark:#d05f39;--ink:#20302d;--muted:#6f7c78;
+    --bg:#faf5ec;--card:#ffffff;--line:#e7dfcf;
+    --header-bg:#ffffff;
+  }
+  [data-theme=dark]{
+    --ink:#eceef2;--muted:#9aa1ad;--bg:#14161c;--card:#1d2028;--line:#2c313d;
+    --header-bg:#1d2028;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;}
+  header{border-bottom:1px solid var(--line);background:var(--header-bg);}
+  .nav{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;}
+  .nav a{color:var(--ink);text-decoration:none;font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.2rem;}
+  .nav a span{color:var(--accent);}
+  .back{font-size:0.85rem;color:var(--muted);text-decoration:none;font-family:'Inter',sans-serif;font-weight:500;}
+  .back:hover{color:var(--accent);}
+  .nav-right{display:flex;align-items:center;gap:14px;}
+  .theme-toggle{background:var(--card);border:1px solid var(--line);border-radius:999px;width:38px;height:38px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  main{max-width:420px;margin:0 auto;padding:56px 20px 80px;}
+  h1{font-family:'Fredoka',sans-serif;font-size:1.7rem;margin-bottom:6px;}
+  .sub{color:var(--muted);font-size:0.95rem;margin-bottom:28px;}
+  form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;}
+  label{display:block;font-size:0.85rem;font-weight:600;margin-bottom:6px;}
+  input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-family:'Inter',sans-serif;font-size:0.95rem;margin-bottom:16px;background:#fdfcf9;}
+  input:focus{outline:2px solid var(--accent);border-color:var(--accent);}
+  .btn{width:100%;background:var(--accent);color:#fff;font-weight:600;font-size:1rem;padding:13px;border:none;border-radius:10px;cursor:pointer;}
+  .btn:hover{background:var(--accent-dark);}
+  .alt{text-align:center;margin-top:20px;font-size:0.9rem;color:var(--muted);}
+  .alt a{color:var(--accent);font-weight:600;text-decoration:none;}
+  .tg-float{position:fixed;right:20px;bottom:20px;width:54px;height:54px;border-radius:50%;background:#229ED9;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(34,158,217,0.45);transition:transform .2s;z-index:90;}
+  .tg-float:hover{transform:scale(1.1);}
+  .tg-float svg{width:28px;height:28px;fill:#fff;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html">Whisker <span>&amp;</span> Wag</a>
+    <div class="nav-right">
+      <button class="theme-toggle" type="button">&#9789;</button>
+      <a class="back" href="index.html">&larr; Back to store</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1>Welcome back</h1>
+  <p class="sub">Log in to check out faster and track your orders.</p>
+
+  <p class="err" id="errmsg" style="display:none;background:#fdecec;border:1px solid #f5c2c4;color:#b3261e;padding:10px 14px;border-radius:10px;font-size:0.85rem;margin-bottom:20px;">Wrong email or password. Try again.</p>
+
+  <form action="/api/login" method="POST">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="you@email.com" required>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="Your password" required>
+
+    <button class="btn" type="submit">Log In</button>
+  </form>
+
+  <p class="alt">New here? <a href="signup.html">Create an account</a></p>
+<script>
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('error')) document.getElementById('errmsg').style.display = 'block';
+</script>
+
+</main>
+
+<script src="theme.js"></script>
+</body>
+</html>

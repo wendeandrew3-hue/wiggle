@@ -1,0 +1,8 @@
+{
+  "name": "whisker-and-wag",
+  "version": "1.0.0",
+  "description": "Whisker & Wag - cat and dog toys store",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "express": "^4.19.2" }
+}
