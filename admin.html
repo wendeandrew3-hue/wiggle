@@ -1,1 +1,151 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - GadgetGrub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#ff6b35;--accent-dark:#e0511f;--ink:#1f2430;--muted:#5c6470;
+    --bg:#faf7f2;--card:#ffffff;--line:#e9e2d8;--header-bg:#ffffff;--footer-bg:#f3efe8;
+  }
+  [data-theme=dark]{
+    --ink:#eceef2;--muted:#9aa1ad;--bg:#14161c;--card:#1d2028;--line:#2c313d;
+    --header-bg:#1d2028;--footer-bg:#101218;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;}
+  header{border-bottom:1px solid var(--line);background:var(--header-bg);}
+  .nav{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;}
+  .nav a.logo{color:var(--ink);text-decoration:none;font-family:'Fraunces',serif;font-weight:700;font-size:1.2rem;}
+  .nav a.logo span{color:var(--accent);}
+  .back{font-size:0.85rem;color:var(--muted);text-decoration:none;font-weight:500;}
+  .back:hover{color:var(--accent);}
+  main{max-width:900px;margin:0 auto;padding:48px 20px 80px;}
+  h1{font-family:'Fraunces',serif;font-size:1.7rem;margin-bottom:6px;}
+  h2{font-family:'Fraunces',serif;font-size:1.2rem;margin:28px 0 14px;}
+  .sub{color:var(--muted);font-size:0.95rem;margin-bottom:28px;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;}
+  .login-box{max-width:420px;margin:0 auto;}
+  label{display:block;font-size:0.85rem;font-weight:600;margin-bottom:8px;}
+  input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-family:'Inter',sans-serif;font-size:0.95rem;background:var(--bg);color:var(--ink);margin-bottom:16px;}
+  input:focus{outline:2px solid var(--accent);border-color:var(--accent);}
+  .btn{display:inline-block;background:var(--accent);color:#fff;font-weight:600;font-size:0.95rem;padding:12px 22px;border:none;border-radius:10px;cursor:pointer;}
+  .btn:hover{background:var(--accent-dark);}
+  .err{color:#c0392b;font-size:0.85rem;margin-bottom:12px;display:none;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:8px;}
+  @media(max-width:560px){.stats{grid-template-columns:1fr;}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;}
+  .stat .num{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:700;}
+  .stat .lbl{color:var(--muted);font-size:0.82rem;}
+  table{width:100%;border-collapse:collapse;font-size:0.9rem;}
+  th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--line);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);}
+  td{padding:10px 12px;border-bottom:1px solid var(--line);}
+  tr:last-child td{border-bottom:none;}
+  .muted{color:var(--muted);}
+  .empty{color:var(--muted);text-align:center;padding:18px 0;}
+  .wrap-table{overflow-x:auto;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="index.html">Gadget<span>Grub</span> <span style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;color:var(--muted);letter-spacing:0.08em;">ADMIN</span></a>
+    <a class="back" href="index.html">&larr; Back to store</a>
+  </div>
+</header>
+
+<main>
+  <div id="gate" class="box login-box">
+    <h1>Admin</h1>
+    <p class="sub">Enter the admin password to see signups, logins and payments.</p>
+    <div class="err" id="err">Wrong password.</div>
+    <label for="pw">Admin password</label>
+    <input type="password" id="pw" placeholder="Password">
+    <button class="btn" id="go">View Data</button>
+  </div>
+
+  <div id="board" style="display:none;">
+    <h1>Store Overview</h1>
+    <p class="sub">Everyone who signed up, logged in, and paid.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="num" id="n-users">0</div><div class="lbl">Signups</div></div>
+      <div class="stat"><div class="num" id="n-logins">0</div><div class="lbl">Users who logged in</div></div>
+      <div class="stat"><div class="num" id="n-payments">0</div><div class="lbl">Payments</div></div>
+      <div class="stat"><div class="num" id="n-orders">0</div><div class="lbl">Test orders</div></div>
+    </div>
+
+    <h2>Users</h2>
+    <div class="box wrap-table">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Signed up</th><th>Last login</th></tr></thead>
+        <tbody id="users-body"></tbody>
+      </table>
+    </div>
+
+    <h2>Test Orders</h2>
+    <p class="sub">Exactly what the site relayed from each checkout. Card shown as brand + last 4 only.</p>
+    <div class="box wrap-table">
+      <table>
+        <thead><tr><th>Ref</th><th>Date</th><th>Customer</th><th>Amount</th><th>Card</th><th>Ship to</th><th>Bill to</th></tr></thead>
+        <tbody id="orders-body"></tbody>
+      </table>
+    </div>
+
+    <h2>Payments</h2>
+    <div class="box" id="payments-box"></div>
+  </div>
+</main>
+
+<script>
+  function fmt(iso) {
+    if (!iso || iso === 'never') return 'never';
+    var d = new Date(iso);
+    return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+  document.getElementById('go').addEventListener('click', function () {
+    fetch('/api/admin/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: document.getElementById('pw').value })
+    }).then(function (r) {
+      if (!r.ok) { document.getElementById('err').style.display = 'block'; return null; }
+      return r.json();
+    }).then(function (data) {
+      if (!data) return;
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('board').style.display = 'block';
+      document.getElementById('n-users').textContent = data.users.length;
+      document.getElementById('n-logins').textContent = data.users.filter(function (u) { return u.last_login !== 'never'; }).length;
+      document.getElementById('n-payments').textContent = data.payments.length;
+      document.getElementById('n-orders').textContent = data.orders.length;
+      var esc = function (s) { return String(s || '').replace(/</g, '&lt;'); };
+      document.getElementById('orders-body').innerHTML = data.orders.map(function (o) {
+        var ship = esc(o.shipping.name ? o.shipping.name + ', ' : '') + esc(o.shipping.street) + ', ' + esc(o.shipping.city) + ' ' + esc(o.shipping.state) + ' ' + esc(o.shipping.zip);
+        var bill = o.billing && o.billing.street ? (esc(o.billing.name ? o.billing.name + ', ' : '') + esc(o.billing.street) + ', ' + esc(o.billing.city) + ' ' + esc(o.billing.state) + ' ' + esc(o.billing.zip)) : '<span class="muted">same as shipping</span>';
+        return '<tr><td>' + esc(o.id) + '</td><td>' + fmt(o.date) + '</td><td>' + esc(o.name || o.email) + '</td><td>$' + (o.amount / 100).toFixed(2) + '</td><td>' + esc(o.card.brand) + ' &bull;&bull;&bull;&bull; ' + esc(o.card.last4) + '<br><span class="muted">' + esc(o.card.exp) + ' &bull;&bull;&bull; ' + esc(o.card.cvc) + '</span></td><td>' + ship + '</td><td>' + bill + '</td></tr>';
+      }).join('') || '<tr><td colspan="7" class="empty">No test orders yet. Run a checkout on the store, it shows up here.</td></tr>';
+      var tb = document.getElementById('users-body');
+      tb.innerHTML = data.users.map(function (u) {
+        return '<tr><td>' + u.name + '</td><td>' + u.email + '</td><td>' + (u.phone || '<span class="muted">-</span>') + '</td><td>' + fmt(u.joined) + '</td><td>' + fmt(u.last_login) + '</td></tr>';
+      }).join('');
+      var pb = document.getElementById('payments-box');
+      pb.innerHTML = data.payments.length === 0
+        ? '<p class="empty">No payments yet. This fills up once your card processor is connected.</p>'
+        : '<table><thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>Method</th></tr></thead><tbody>' +
+          data.payments.map(function (p) {
+            return '<tr><td>' + fmt(p.date) + '</td><td>' + p.customer + '</td><td>$' + p.amount.toFixed(2) + '</td><td>' + p.method + '</td></tr>';
+          }).join('') + '</tbody></table>';
+    });
+  });
+  document.getElementById('pw').addEventListener('keydown', function (e) { if (e.key === 'Enter') document.getElementById('go').click(); });
+</script>
+
+</body>
+</html>
