@@ -47,7 +47,10 @@
   [data-theme=dark] .theme-toggle{background:var(--teal-deep);border-color:#2c4a44;color:var(--cream);}
   [data-theme=dark] .logo{color:var(--cream);}
 
-  .hero{max-width:1080px;margin:0 auto;padding:64px 20px 48px;text-align:center;}
+  .hero{position:relative;overflow:hidden;max-width:1080px;margin:0 auto;padding:88px 20px 64px;text-align:center;}
+  .hero-bg{position:absolute;inset:0;background:url("assets/hero-bg.png") center/cover no-repeat;filter:blur(7px) saturate(1.05);transform:scale(1.15);}
+  .hero-overlay{position:absolute;inset:0;background:rgba(250,244,236,0.62);}
+  .hero > *:not(.hero-bg):not(.hero-overlay){position:relative;z-index:1;}
   .hero .kicker{display:inline-block;background:var(--cream-soft);border:1px solid var(--line);color:var(--teal);font-size:0.8rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:18px;}
   .hero h1{font-size:clamp(2.1rem,6vw,3.3rem);color:var(--teal);margin-bottom:16px;}
   .hero p{color:var(--muted);font-size:1.05rem;max-width:34rem;margin:0 auto 28px;}
@@ -94,13 +97,13 @@
 
   @media (min-width:820px){
     .grid{grid-template-columns:repeat(3,1fr);}
-    .hero{padding:88px 20px 64px;}
   }
   @media (max-width:480px){
     .grid{grid-template-columns:1fr;}
     .nav-links{display:none;}
   }
   [data-theme=dark] body{background:#0e2a2c;color:var(--cream);}
+  [data-theme=dark] .hero-overlay{background:rgba(14,42,44,0.66);}
   [data-theme=dark] .card{background:#124039;border-color:#1d524a;}
   [data-theme=dark] .card h3,[data-theme=dark] .hero-copy h1{color:var(--cream);}
   [data-theme=dark] .card .desc,[data-theme=dark] .hero-copy p{color:#b8c7bd;}
@@ -139,6 +142,8 @@
 <main id="top">
 
   <section class="hero">
+    <div class="hero-bg" role="presentation"></div>
+    <div class="hero-overlay" role="presentation"></div>
     <span class="kicker">Playtime, sorted</span>
     <h1>Toys that keep every tail busy.</h1>
     <p>Hand-picked cat and dog toys that survive real play. Wands, mice, tugs, squeakers and balls, split so you find your pet's favorite in seconds.</p>
