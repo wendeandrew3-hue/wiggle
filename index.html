@@ -48,8 +48,8 @@
   [data-theme=dark] .logo{color:var(--cream);}
 
   .hero{position:relative;overflow:hidden;max-width:1080px;margin:0 auto;padding:88px 20px 64px;text-align:center;}
-  .hero-bg{position:absolute;inset:0;background:url("assets/hero-bg.png") center/cover no-repeat;filter:blur(7px) saturate(1.05);transform:scale(1.15);}
-  .hero-overlay{position:absolute;inset:0;background:rgba(250,244,236,0.62);}
+  .hero-bg{position:absolute;inset:0;background:url("assets/hero-bg.png") center/cover no-repeat;filter:blur(4px) saturate(1.08);transform:scale(1.15);}
+  .hero-overlay{position:absolute;inset:0;background:rgba(250,244,236,0.42);}
   .hero > *:not(.hero-bg):not(.hero-overlay){position:relative;z-index:1;}
   .hero .kicker{display:inline-block;background:var(--cream-soft);border:1px solid var(--line);color:var(--teal);font-size:0.8rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:18px;}
   .hero h1{font-size:clamp(2.1rem,6vw,3.3rem);color:var(--teal);margin-bottom:16px;}
@@ -103,7 +103,7 @@
     .nav-links{display:none;}
   }
   [data-theme=dark] body{background:#0e2a2c;color:var(--cream);}
-  [data-theme=dark] .hero-overlay{background:rgba(14,42,44,0.66);}
+  [data-theme=dark] .hero-overlay{background:rgba(14,42,44,0.5);}
   [data-theme=dark] .card{background:#124039;border-color:#1d524a;}
   [data-theme=dark] .card h3,[data-theme=dark] .hero-copy h1{color:var(--cream);}
   [data-theme=dark] .card .desc,[data-theme=dark] .hero-copy p{color:#b8c7bd;}
@@ -439,7 +439,7 @@
 <script>
   document.querySelectorAll('.add-to-cart').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      WWCart.add(btn.dataset.name, parseFloat(btn.dataset.price));
+      WWCart.add(btn.dataset.name, parseFloat(String(btn.dataset.price).replace(/[^0-9.]/g, '')));
       btn.parentElement.querySelector('.added-note').style.display = 'block';
       setTimeout(function () { btn.parentElement.querySelector('.added-note').style.display = 'none'; }, 1600);
     });

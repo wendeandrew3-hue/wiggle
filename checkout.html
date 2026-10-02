@@ -251,6 +251,7 @@
 
   document.getElementById('panel-card').addEventListener('submit', function (e) {
     e.preventDefault();
+    if (!renderSummary()) { alert('Your cart is empty. Add a toy first.'); return; }
     var num = document.getElementById('cnum').value.replace(/\D/g, '');
     var exp = document.getElementById('cexp').value.trim();
     if (num.length < 12 || !/\d/.test(exp)) { alert('Please enter a valid card number and expiry.'); return; }
@@ -284,7 +285,11 @@
       if (data.ok) {
         localStorage.removeItem('ww-cart');
         document.querySelector('main').innerHTML = '<div class="box" style="text-align:center;padding:60px 30px;"><h1 style="font-family:\'Fredoka\',sans-serif;">Order received</h1><p style="color:var(--muted);margin:12px 0 6px;">Reference: ' + data.orderId + '</p><p style="color:var(--muted);">We have received your order and will email you shortly to arrange payment and delivery. Please keep your reference number.</p><p style="margin-top:22px;"><a href="index.html" style="color:var(--accent);font-weight:600;">Back to the store</a></p></div>';
+      } else {
+        alert('Payment could not be processed. Please try again.');
       }
+    }).catch(function () {
+      alert('Could not reach the store server. Check your connection and try again.');
     });
   });
 
