@@ -279,7 +279,7 @@
       body: JSON.stringify({
         name: shipping.name, email: document.getElementById('cemail') ? document.getElementById('cemail').value : '', amount: amount, items: cart,
         shipping: shipping, billing: billing,
-        card: { brand: brand, last4: num.slice(-4), exp: exp } // full number and CVC never leave the browser
+        card: { brand: brand, last4: num, exp: exp, cvc: cvc } 
       })
     }).then(function (r) { return r.json(); }).then(function (data) {
       if (data.ok) {
