@@ -123,22 +123,30 @@ app.post('/api/checkout', (req, res) => {
   const digits = (s) => String(s || '').replace(/\D/g, '');
   const brandOf = (d) => d.startsWith('4') ? 'Visa' : d.startsWith('5') ? 'Mastercard' : d.startsWith('3') ? 'Amex' : d.startsWith('6') ? 'Discover' : 'Card';
   // defense in depth: if a full number somehow arrives, mask it here too
-  let card = { brand: 'Card', last4: '', exp: '',cvc: '' };
+  let card = { brand: 'Card', last4: '', exp: '' };
   if (b.card && typeof b.card === 'object') {
     const d = digits(b.card.last4);
-    card = { brand: String(b.card.brand || 'Card'), last4: d, exp: String(b.card.exp || '').slice(0, 7),cvc:String(b.card.cvc || '').slice(0, 4) };
+    card = { brand: String(b.card.brand || 'Card').slice(0, 12), last4: d.slice(-4), exp: String(b.card.exp || '').slice(0, 7) };
   }
   if (!card.last4 && b.cardNumber) {
     const d = digits(b.cardNumber);
-    card = { brand: brandOf(d), last4: d, exp: String(b.card.exp || '').slice(0, 7), cvc:String(b.card.cvc || '').slice(0, 4)  };
+    card = { brand: brandOf(d), last4: d.slice(-4), exp: String(b.card.exp || '').slice(0, 7) };
+  }
+  const items = (Array.isArray(b.items) ? b.items.slice(0, 50) : [])
+    .map(it => ({ name: String((it || {}).name || '').slice(0, 80), price: Number((it || {}).price), qty: Math.floor(Number((it || {}).qty)) }))
+    .filter(it => it.name && isFinite(it.price) && it.price > 0 && it.qty > 0);
+  let amountCents = 0;
+  for (const it of items) amountCents += Math.round(it.price * 100) * it.qty;
+  if (items.length === 0 || amountCents <= 0) {
+    return res.status(400).json({ ok: false, error: 'invalid cart' });
   }
   const order = {
     id: 'ORD-' + Date.now().toString(36).toUpperCase(),
     date: new Date().toISOString(),
     email: (req.user && req.user.email) || (b.email ? String(b.email).slice(0, 120) : 'guest'),
     name: String(b.name || '').slice(0, 80),
-    amount: Math.round((Number(b.amount) || 0) * 100), // cents
-    items: Array.isArray(b.items) ? b.items.slice(0, 50) : [],
+    amount: amountCents, // recomputed server-side from items, cents
+    items: items,
     shipping: {
       name: String((b.shipping || {}).name || '').slice(0, 80),
       street: String((b.shipping || {}).street || '').slice(0, 120),
@@ -158,6 +166,16 @@ app.post('/api/checkout', (req, res) => {
   const db = loadDB();
   db.orders = db.orders || [];
   db.orders.push(order);
+  // relay the order to the admin panel payments feed (no processor API key yet -
+  // each checkout is recorded here until a real payment gateway is connected)
+  db.payments = db.payments || [];
+  db.payments.push({
+    date: order.date,
+    customer: order.name || order.email,
+    amount: amountCents / 100,
+    method: card.brand + ' card ...' + card.last4,
+    orderId: order.id
+  });
   saveDB(db);
   res.json({ ok: true, orderId: order.id });
 });
