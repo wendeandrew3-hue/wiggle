@@ -131,13 +131,21 @@ app.post('/api/checkout', (req, res) => {
     const d = digits(b.cardNumber);
     card = { brand: brandOf(d), last4: d.slice(-4), exp: String(b.card.exp || '').slice(0, 7) };
   }
+  const items = (Array.isArray(b.items) ? b.items.slice(0, 50) : [])
+    .map(it => ({ name: String((it || {}).name || '').slice(0, 80), price: Number((it || {}).price), qty: Math.floor(Number((it || {}).qty)) }))
+    .filter(it => it.name && isFinite(it.price) && it.price > 0 && it.qty > 0);
+  let amountCents = 0;
+  for (const it of items) amountCents += Math.round(it.price * 100) * it.qty;
+  if (items.length === 0 || amountCents <= 0) {
+    return res.status(400).json({ ok: false, error: 'invalid cart' });
+  }
   const order = {
     id: 'ORD-' + Date.now().toString(36).toUpperCase(),
     date: new Date().toISOString(),
     email: (req.user && req.user.email) || (b.email ? String(b.email).slice(0, 120) : 'guest'),
     name: String(b.name || '').slice(0, 80),
-    amount: Math.round((Number(b.amount) || 0) * 100), // cents
-    items: Array.isArray(b.items) ? b.items.slice(0, 50) : [],
+    amount: amountCents, // recomputed server-side from items, cents
+    items: items,
     shipping: {
       name: String((b.shipping || {}).name || '').slice(0, 80),
       street: String((b.shipping || {}).street || '').slice(0, 120),

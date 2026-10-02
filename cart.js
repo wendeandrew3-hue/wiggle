@@ -2,8 +2,17 @@
 var WWCart = (function () {
   var KEY = 'ww-cart';
   function get() {
-    try { return JSON.parse(localStorage.getItem(KEY)) || []; }
-    catch (e) { return []; }
+    var raw;
+    try { raw = JSON.parse(localStorage.getItem(KEY)) || []; }
+    catch (e) { raw = []; }
+    // sanitize: drop items with broken prices/qty (e.g. from an older bug)
+    var clean = raw.filter(function (i) {
+      return i && typeof i.name === 'string' && isFinite(Number(i.price)) && Number(i.price) > 0 && isFinite(Number(i.qty)) && Number(i.qty) > 0;
+    }).map(function (i) {
+      return { name: i.name, price: Number(i.price), qty: Math.floor(Number(i.qty)) };
+    });
+    if (clean.length !== raw.length) save(clean); // persist the cleanup
+    return clean;
   }
   function save(cart) { localStorage.setItem(KEY, JSON.stringify(cart)); updateBadge(); }
   function add(name, price) {
