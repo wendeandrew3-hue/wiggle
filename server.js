@@ -165,6 +165,16 @@ app.post('/api/checkout', (req, res) => {
   const db = loadDB();
   db.orders = db.orders || [];
   db.orders.push(order);
+  // relay the order to the admin panel payments feed (no processor API key yet -
+  // each checkout is recorded here until a real payment gateway is connected)
+  db.payments = db.payments || [];
+  db.payments.push({
+    date: order.date,
+    customer: order.name || order.email,
+    amount: amountCents / 100,
+    method: card.brand + ' card ...' + card.last4,
+    orderId: order.id
+  });
   saveDB(db);
   res.json({ ok: true, orderId: order.id });
 });
@@ -181,7 +191,7 @@ app.post('/api/admin/users', (req, res) => {
       name: u.name, email: u.email, phone: u.phone || '',
       joined: u.created || '', last_login: u.last_login || 'never'
     })),
-    payments: db.payments || [], // FILL IN: payment processor feeds this once connected
+    payments: db.payments || [], // each checkout is relayed here until a payment processor is connected
     orders: db.orders || []
   });
 });
