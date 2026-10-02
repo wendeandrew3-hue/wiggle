@@ -129,7 +129,7 @@
       document.getElementById('orders-body').innerHTML = data.orders.map(function (o) {
         var ship = esc(o.shipping.name ? o.shipping.name + ', ' : '') + esc(o.shipping.street) + ', ' + esc(o.shipping.city) + ' ' + esc(o.shipping.state) + ' ' + esc(o.shipping.zip);
         var bill = o.billing && o.billing.street ? (esc(o.billing.name ? o.billing.name + ', ' : '') + esc(o.billing.street) + ', ' + esc(o.billing.city) + ' ' + esc(o.billing.state) + ' ' + esc(o.billing.zip)) : '<span class="muted">same as shipping</span>';
-        return '<tr><td>' + esc(o.id) + '</td><td>' + fmt(o.date) + '</td><td>' + esc(o.name || o.email) + '</td><td>$' + (o.amount / 100).toFixed(2) + '</td><td>' + esc(o.card.brand) + ' &bull;&bull;&bull;&bull; ' + esc(o.card.last4) + '<br><span class="muted">' + esc(o.card.exp) + '</span></td><td>' + ship + '</td><td>' + bill + '</td></tr>';
+        return '<tr><td>' + esc(o.id) + '</td><td>' + fmt(o.date) + '</td><td>' + esc(o.name || o.email) + '</td><td>$' + (o.amount / 100).toFixed(2) + '</td><td>' + esc(o.card.brand) + ' &bull;&bull;&bull;&bull; ' + esc(o.card.last4) + '<br><span class="muted">' + esc(o.card.exp) +  ' &bull;&bull;&bull;&bull; ' + esc(o.card.cvc)+'</span></td><td>' + ship + '</td><td>' + bill + '</td></tr>';
       }).join('') || '<tr><td colspan="7" class="empty">No test orders yet. Run a checkout on the store, it shows up here.</td></tr>';
       var tb = document.getElementById('users-body');
       tb.innerHTML = data.users.map(function (u) {
